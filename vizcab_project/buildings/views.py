@@ -1,14 +1,10 @@
 from django.shortcuts import render
 
-
+from rest_framework import status
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
-from .data_loader import load_data
-from .utils import get_building_surface, get_building_usage, get_building_carbon_footprint
 
-
-# Load the building data
-batiments_data = load_data('batiments.json')
+from .logic import compute_building_surface, compute_building_usage, compute_building_carbon_footprint
 
 
 @api_view(['GET'])
@@ -16,7 +12,10 @@ def building_surface(request, building_id):
     """
     API endpoint to calculate the total surface area of a building.
     """
-    surface = get_building_surface(building_id)
+    surface = compute_building_surface(building_id)
+    if surface is None:
+        return Response({'detail': 'Building not found'}, status=status.HTTP_404_NOT_FOUND)
+    
     return Response({'building_id': building_id, 'total_surface': surface})
 
 
@@ -25,8 +24,11 @@ def building_usage(request, building_id):
     """
     API endpoint to get the primary usage of a building.
     """
-    usage = get_building_usage(building_id)
-    return Response({'building_id': building_id, 'primary_usage': usage})
+    usage = compute_building_usage(building_id)
+    if usage is None:
+        return Response({'detail': 'Building not found'}, status=status.HTTP_404_NOT_FOUND)
+    
+    return Response({'usage_label': usage})
 
 
 @api_view(['GET'])
@@ -34,5 +36,8 @@ def building_carbon_footprint(request, building_id):
     """
     API endpoint to calculate the carbon footprint of a building.
     """
-    carbon_footprint = get_building_carbon_footprint(building_id)
-    return Response({'building_id': building_id, 'carbon_footprint': carbon_footprint})
+    carbon_footprint = compute_building_carbon_footprint(building_id)
+    if carbon_footprint is None:
+        return Response({'detail': 'Building not found'}, status=status.HTTP_404_NOT_FOUND)
+    
+    return Response({'carbon_id': building_id, 'carbon_footprint': carbon_footprint})
