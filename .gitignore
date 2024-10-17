@@ -1,0 +1,25 @@
+__pycache__/
+*.py[cod]
+*$py.class
+
+*.log
+*.pot
+*.pyc
+*.pyo
+*.pyd
+*.db
+*.sqlite3
+
+# Migrations
+**/migrations/**
+
+staticfiles/
+media/
+
+static/
+
+.env
+.env.*
+
+# Testing and coverage files
+.pytest_cache/
