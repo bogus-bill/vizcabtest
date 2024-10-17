@@ -3,10 +3,10 @@ vizcabtest
 
 Pour lancer le projet à partir de Docker:
 
+0) cd vizcab_project
 1) docker build -t vizcab_app .  # générer l'image docker
-2) docker run -d -p 8000:8000 my_django_app # générer le conteneur
-3) docker exec -it <container_id> python manage.py migrate  # appliquer les migrations sur le conteneur
-
+2) docker run --name vizcab_container -d -p 8000:8000 vizcab_app # générer le conteneur
+3) docker exec -it vizcab_container python manage.py migrate  # appliquer les migrations sur le conteneur
 
 Réponses aux questions:
 
